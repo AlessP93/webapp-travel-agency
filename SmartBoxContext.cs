@@ -8,6 +8,15 @@ namespace webapp_travel_agency
 {
     public class SmartBoxContext : IdentityDbContext<IdentityUser>
     {
+        //public SmartBoxContext()
+        //{
+        //    //costruttore vuoto
+        //}
+
+        //public SmartBoxContext(DbContextOptions<SmartBoxContext> options) : base(options)
+        //{
+        //    //costruttore identity
+        //}
         public DbSet<SmartBox>? smartBoxes { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

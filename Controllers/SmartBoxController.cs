@@ -1,12 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient.Server;
 using webapp_travel_agency.Models;
 
 namespace webapp_travel_agency.Controllers
 {
+    [Authorize] // Qui entra la gente autorizzata
     public class SmartBoxController : Controller
     {
+        private readonly ILogger<SmartBoxController> _logger;
+
+        public SmartBoxController(ILogger<SmartBoxController> logger)
+        {
+            _logger = logger;
+        }
+
         // db globale solo nel genitore 
         SmartBoxContext sbc = new SmartBoxContext();
 
