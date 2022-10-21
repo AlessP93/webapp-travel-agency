@@ -1,7 +1,21 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using webapp_travel_agency;
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("SmartBoxContextConnection") ?? throw new InvalidOperationException("Connection string 'SmartBoxContextConnection' not found.");
+
+builder.Services.AddDbContext<SmartBoxContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<SmartBoxContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// aggiunge razor page login
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
 
 var app = builder.Build();
 
@@ -24,5 +38,7 @@ app.UseAuthentication(); //auth
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=SmartBox}/{action=Index}/{id?}");
+
+app.MapRazorPages(); // riga 7
 
 app.Run();

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace webapp_travel_agency.Migrations
 {
-    public partial class SmartBoxMigrations : Migration
+    public partial class FirstMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

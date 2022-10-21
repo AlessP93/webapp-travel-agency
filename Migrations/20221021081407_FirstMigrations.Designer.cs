@@ -12,8 +12,8 @@ using webapp_travel_agency;
 namespace webapp_travel_agency.Migrations
 {
     [DbContext(typeof(SmartBoxContext))]
-    [Migration("20221020122220_SmartBoxMigrations")]
-    partial class SmartBoxMigrations
+    [Migration("20221021081407_FirstMigrations")]
+    partial class FirstMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
