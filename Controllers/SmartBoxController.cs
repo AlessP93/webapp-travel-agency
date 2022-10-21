@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient.Server;
+using Microsoft.EntityFrameworkCore;
 using webapp_travel_agency.Models;
 
 namespace webapp_travel_agency.Controllers
@@ -20,16 +21,20 @@ namespace webapp_travel_agency.Controllers
         SmartBoxContext sbc = new SmartBoxContext();
 
         // GET: SmartBoxController -- Mostrai i dati tipo vetrina
-        public ActionResult Index()
+        //public ActionResult Index()
+        //{
+
+        //    List<SmartBox> smartBox = sbc.smartBoxes.ToList();
+        //    return View("Index", sbc);
+
+        //}
+        public async Task<IActionResult> Index()
         {
-            
-            List<SmartBox> smartBox = sbc.smartBoxes.ToList();
-            return View("Index", sbc);
-           
+            return View(await sbc.smartBoxes.ToListAsync());
         }
 
         // GET: SmartBoxController/Details/5 -- Mostra solo i dati singoli "dettaglio"
-        public ActionResult Details(int id)
+        public ActionResult Detail(int id)
         {
             SmartBox smartBoxObj  = sbc.smartBoxes.Where(obj => obj.Id == id).FirstOrDefault();
 
@@ -40,7 +45,7 @@ namespace webapp_travel_agency.Controllers
             }
             else //Altrimenti viene passata alla vista 
             {
-                return View("Details", smartBoxObj);
+                return View("Detail", smartBoxObj);
             }
        
         }
@@ -61,13 +66,30 @@ namespace webapp_travel_agency.Controllers
             {
                 //smartboxcontext aggiungi formdata dalla pagina
                 sbc.Add(formData);
-                sbc.SaveChanges();
+           
                 return View("Create", formData);
             }
-            formData = sbc.smartBoxes.FirstOrDefault();
-            sbc.smartBoxes.Add(formData);
-            sbc.SaveChanges();
-            return RedirectToAction("Index");
+            //formData = new SmartBox();
+            //formData = sbc.smartBoxes.FirstOrDefault();
+            //sbc.smartBoxes.Add(formData);
+            //sbc.SaveChanges();
+            //return RedirectToAction("Index");
+            {
+
+                SmartBox smartbox = new SmartBox();
+
+                smartbox.Name = formData.Name;
+                smartbox.Description = formData.Description;
+                smartbox.Image = formData.Image;
+                smartbox.Price = formData.Price;
+
+                sbc.smartBoxes.Add(smartbox);
+
+                sbc.SaveChanges();
+
+                return RedirectToAction("Index");
+                
+            }
         }
 
         // GET: SmartBoxController/Edit/5 -- Mostra solo la pagina singola "Modifica"
@@ -108,14 +130,13 @@ namespace webapp_travel_agency.Controllers
         public ActionResult Delete(int id)
         {
             SmartBox smartBoxDelete = sbc.smartBoxes.Where(obj => obj.Id == id).FirstOrDefault();
-            if (smartBoxDelete != null)
-            {
+            
+            if (smartBoxDelete is null) return RedirectToAction("Index");
+            
                 sbc.smartBoxes.Remove(smartBoxDelete);
                 sbc.SaveChanges();
                 return RedirectToAction("Index");
-            }
 
-            return NotFound();
 
         }
     }

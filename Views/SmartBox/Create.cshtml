@@ -1,1 +1,41 @@
-﻿<h1>crea</h1>
+﻿@{
+	Layout = "_Layout"; @*shared index*@
+} 
+
+@model SmartBox
+
+<div class="container">
+    <div class="row text-center">
+        <h1>Crea una SmartBox</h1>
+        <div class="m-auto">
+
+            <form asp-controller="SmartBox" asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <div>
+                    <h4>Nome</h4>
+                    <input asp-for="Name" class="d-blocalert-dark w-50" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div>
+                    <h4>Descrizione</h4>
+                    <textarea asp-for="Description" class="d-blocalert-dark w-50"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div>
+                    <h4>Immagine</h4>
+                    <input asp-for="Image" class="d-blocalert-dark w-50" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+                <div>
+                    <h4>Prezzo</h4>
+                    <input asp-for="Price" class="d-blocalert-dark w-50" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="py-5">
+                    <input type="submit" class="btn btn-small btn-success" value="Salva" />
+                </div>
+            </form>
+            <a href="@Url.Action("Index", "smartbox")">Torna alla pagina iniziale</a>
+        </div>
+    </div>
+</div>

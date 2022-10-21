@@ -1,5 +1,44 @@
-﻿
-@{
+﻿@{
 	Layout = "_Layout"; @*shared index*@
 } 
 
+@model IEnumerable<SmartBox>
+
+ <div class="create text-center py-5">
+    <a class="btn btn-primary" href="@Url.Action("Create", "SmartBox")">Crea una nuova SmartBox</a>
+</div>
+
+    <div class="row">
+   
+            <ul class="d-flex flex-wrap">
+                @foreach (SmartBox smartbox in Model)
+      
+                {
+                    <li class="col-4 list-style-none">
+                        <div class="text-center justify-content-between">
+                            <div>
+                                <img style="width:80%; height:150px" src="@smartbox.Image">
+                            </div>
+
+                            <b>@smartbox.Name:</b>
+                            <span>@smartbox.Description</span>
+                            <span>@smartbox.Price €</span>
+                        </div>
+                                              
+                        <div class="text-center py-5">
+
+                            <a color="white" style href="@Url.Action("Detail", "SmartBox", new{ id = smartbox.Id})">Visualizza</a>
+
+                            <a href="@Url.Action("Edit","smartbox", new{ id = smartbox.Id})">Modifica</a>
+
+                               <form class="d-flex" asp-controller="SmartBox" asp-action="Delete" asp-route-id="@smartbox.Id">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-danger m-auto">Elimina</button>
+                               </form>
+                        </div>
+                    </li>
+                }              
+            </ul>
+     
+    </div>
+</div>

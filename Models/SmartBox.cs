@@ -21,5 +21,10 @@ namespace webapp_travel_agency.Models
         [Range(0, 500, ErrorMessage = "Il prezzo non può essere superiore di 500")]
         public int? Price { get; set; }
 
+        public SmartBox()
+        {
+
+        }
+
     }
 }
