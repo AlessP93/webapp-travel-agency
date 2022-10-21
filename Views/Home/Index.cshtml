@@ -1,18 +1,55 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿
+@model List<SmartBox>
 
-<div class="text-center">
-    <h1 class="display-4">Benvenuto nel sito Ufficiale Smartbox®</h1>
-    <p>
-        I prodotti fisici Smartbox si presentano sotto forma di una brochure che ti permetterà di scoprire l’ampia gamma di esperienze offerte da Smartbox. Consulta la lista completa delle esperienze e scegli la tua preferita sull’App Smartbox o su smartbox.com
-        *Condizioni dettagliate su smartbox.com
-        **Indagine condotta a luglio 2020
-        ***Ad eccezione dei prodotti con validità specifica. Per maggiori dettagli consulta smartbox.com
+<body onload="cerca()">
+    <section class="text-center">
+        <div class="container">
+            <input class="js-search" type="text" placeholder="Cerca la Smartbox" />
+            <div class="row">
+            </div>
+        </div>
+    </section>
+</body>
 
-        Il metodo di pagamento Limonetik (Business Pass) è valido su nuovi acquisti, ma non permette di usufruire di codici promozionali. I codici promozionali sono validi solo su nuovi acquisti e non su cambi prodotto.
-        Nessuna promozione attiva sul sito Smartbox (in particolare, ma non a titolo esaustivo, codici sconto, cofanetto regalo gratuito da aggiungere al carrello, prodotti con prezzo barrato) è cumulabile con altre promozioni, codici sconto o credito Smartbox.
-        Inoltre, qualsiasi promozione attiva sul sito Smartbox (in particolare, ma non a titolo esaustivo, codici sconto, cofanetto regalo gratuito da aggiungere al carrello, prodotti con prezzo barrato) è applicabile solo ai nuovi ordini con esclusione dei prodotti ottenuti a seguito di cambi o credito Smartbox.
 
-    </p>
-</div>
+<script type="text/javascript">
+    const cardBox = document.querySelector(".row");
+    const BoxSearch = document.querySelector(".js-search")
+    let lista;
+
+    BoxSearch.addEventListener("keyup", cerca)
+
+    function cerca() {
+        axios.get("/api/smartbox/get", {
+            params: {
+                Name: BoxSearch.value
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                lista = response.data; //valori api
+                if (lista.length) {
+                    cardBox.innerHTML = ""
+                    lista.forEach(smartbox => {
+                        
+                        cardBox.innerHTML +=
+
+                            `<div class="col-4 py-2" >
+                                <a class="text-decoration-none text-danger card" href="smartbox/Detail/${smartbox.Id}" >
+                                    <div class="card bg-dark bg-gradient text-white border-2 rounded-lg" >
+                                        <img class="img-fluid" src = "${smartbox.image}" alt = "${smartbox.image}" />
+                                        <h3 class="py-1" > ${smartbox.name}</h3>
+                                        <span class="py-1" > Prezzo: ${smartbox.price}$ </span>
+                                        <p class="px-2" > Descrizione: <small>${smartbox.description}</small></p >
+                                    </div>
+                                </a>
+                            </div>`
+                    })
+                } else {
+                    cardBox.innerHTML = "<h1>non ci sono SmartBox</h1>"
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }</script>
